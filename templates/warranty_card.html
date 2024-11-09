@@ -105,8 +105,8 @@
             </tr>
             {% for key, value in details.items() %}
             <tr>
-                <td>{{ key }}</td>
-                <td>{{ value }}</td>
+                <td>{{ key.replace("_", " ").upper() }}</td>
+                <td>{{ value.upper() }}</td>
             </tr>
             {% endfor %}
         </table>
