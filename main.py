@@ -13,6 +13,9 @@ with app.app_context():
 
 @app.route("/whatsapp", methods=["POST"])
 def whatsapp_reply():
+    """
+    Handle incoming WhatsApp messages and respond accordingly.
+    """
     from_number = request.values.get('From')
     incoming_msg = request.values.get('Body', '').lower()
     response = MessagingResponse()
@@ -22,8 +25,7 @@ def whatsapp_reply():
         return "Interactive menu sent."
     elif 'create new' in incoming_msg:
         ask_for_detail(from_number, "Product Name")
-        db.session.commit()
-        db.session.add(WarrantyCard(phone_number=from_number))  # Start a new card entry
+        db.session.add(WarrantyCard(phone_number=from_number))
         db.session.commit()
         return "Requesting Product Name."
     elif 'view last card' in incoming_msg:
@@ -40,6 +42,9 @@ def whatsapp_reply():
 
 @app.route('/pdfs/<filename>')
 def serve_pdf(filename):
+    """
+    Serve PDF files from the PDF folder.
+    """
     return send_from_directory(PDF_FOLDER, filename)
 
 if __name__ == "__main__":

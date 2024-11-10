@@ -5,8 +5,13 @@ import os
 import uuid
 from models import WarrantyCard
 
-
 def send_interactive_menu(to_number):
+    """
+    Sends an interactive menu to the specified WhatsApp number.
+    
+    Args:
+        to_number (str): The recipient's WhatsApp number.
+    """
     client.messages.create(
         content_sid="HX708ef706226c99a481d82c8a48fc416a",
         from_=TWILIO_WHATSAPP_NUMBER,
@@ -14,6 +19,13 @@ def send_interactive_menu(to_number):
     )
 
 def ask_for_detail(to_number, detail_name):
+    """
+    Asks the user for a specific detail via WhatsApp message.
+    
+    Args:
+        to_number (str): The recipient's WhatsApp number.
+        detail_name (str): The name of the detail to ask for.
+    """
     client.messages.create(
         body=f"Please enter the {detail_name}:",
         from_=TWILIO_WHATSAPP_NUMBER,
@@ -21,7 +33,13 @@ def ask_for_detail(to_number, detail_name):
     )
 
 def handle_user_input(from_number, incoming_msg):
-    # Fields to be filled in sequence
+    """
+    Handles user input and updates the warranty card details.
+    
+    Args:
+        from_number (str): The sender's WhatsApp number.
+        incoming_msg (str): The incoming message content.
+    """
     detail_sequence = ["product_name", "purchase_date", "warranty_duration", 
                        "customer_name", "serial_number", "additional_terms"]
 
@@ -45,6 +63,15 @@ def handle_user_input(from_number, incoming_msg):
         ask_for_detail(from_number, "Product Name")
 
 def generate_pdf(card):
+    """
+    Generates a PDF for the warranty card.
+    
+    Args:
+        card (WarrantyCard): The warranty card object.
+    
+    Returns:
+        str: The filename of the generated PDF.
+    """
     card_details = {
         "product_name": card.product_name,
         "purchase_date": card.purchase_date,
@@ -63,6 +90,13 @@ def generate_pdf(card):
     return pdf_filename
 
 def send_pdf_link(to_number, pdf_url):
+    """
+    Sends the PDF link to the specified WhatsApp number.
+    
+    Args:
+        to_number (str): The recipient's WhatsApp number.
+        pdf_url (str): The URL of the PDF.
+    """
     client.messages.create(
         body="Here is your warranty card PDF:",
         media_url=pdf_url,
